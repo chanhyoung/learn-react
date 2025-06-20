@@ -1,29 +1,56 @@
-function CourseItem() {
-  
-  const course = {
-    title: "입문자를 위한, HTML&CSS 웹 개발 입문",
-    description: "웹 개발에 필요한 기본 지식을 배웁니다. ",
-    image: "/img/htmlcss.png",
-    alt: "강의 이미지"
-  }
-  
-  const isEmpty = false;
+function HeartIconBtn({ onHeartClick, isFavorite = false }) {
+  return (
+    <button className="btn" onClick={onHeartClick}>
+      {/* {isFavorite ? (
+          <img className="btn__img" src="/img/heart-fill-icon.svg" />
+        ) : (
+          <img className="btn__img" src="/img/heart-icon.svg" />
+        )} */}
+      <img
+        className="btn__img"
+        src={isFavorite ? "/img/heart-fill-icon.svg" : "/img/heart-icon.svg"}
+      />
+    </button>
+  );
+}
 
-  if (isEmpty) {
-    return (
-      <p>강의가 없습니다.</p>
-    )
+function LinkIconBtn({ link }) {
+  return (
+    <a className="btn" href={link} target="_blank" rel="noreferrer">
+      <img className="btn__img" src="/img/link-icon.svg" alt="" />
+    </a>
+  );
+}
+
+export default function CourseItem({
+  title,
+  description,
+  thumbnail,
+  isFavorite,
+  link,
+}) {
+  function handleFavorite(e) {
+    e.stopPropagation();
+    alert(isFavorite ? "좋아요" : "모르겠어요");
+  }
+
+  function handleItemClick() {
+    window.open(link, "_blank");
   }
   return (
-    <article className="course">
-      <img className="course__img" src={course.image} alt={course.alt} />
+    <article className="course" onClick={handleItemClick}>
+      <img className="course__img" src={thumbnail} alt="강의 이미지" />
       <div className="course__body">
-        <div className="course__title">{course.title}</div>
-        <div className="course__description">{course.description}</div>
+        <div className="course__title">{title}</div>
+        <div className="course__description">{description}</div>
+      </div>
+      <div className="course__icons">
+        <HeartIconBtn
+          isFavorite={isFavorite}
+          onHeartClick={handleFavorite}
+        ></HeartIconBtn>
+        {link && <LinkIconBtn link={link} />}
       </div>
     </article>
   );
 }
-
-export default CourseItem;
-
